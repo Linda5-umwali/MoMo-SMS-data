@@ -9,7 +9,7 @@
   - store the processed data in a relational database
   - provide a frontend interface for analysis and vizualisation of transaction made.
 
-    Our goal is to develop backend data processing, database management, and frontend implementation into a scalable solution with experience in collaborative software engineering processes.
+Our goal is to develop backend data processing, database management, and frontend implementation into a scalable solution with experience in collaborative software engineering processes.
 
 # System architecture
   - backend: Handles XML parsing, data cleaning and APIs
