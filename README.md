@@ -23,7 +23,7 @@ Also, critical like amount employs exact notation (DECIMAL), and timestamp types
 
 (The design was created using lucidcharts).
 
-- design can be viewed directly here: docs/ERD_design.pdf or https://github.com/Linda5-umwali/MoMo-SMS-data/blob/main/docs/ERD_design.pdf 
+- design can be viewed directly here: https://github.com/Linda5-umwali/MoMo-SMS-data/blob/main/docs/ERD_design.pdf 
 
 # Team members
 - Angel Wangui Kibui
