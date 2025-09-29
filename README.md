@@ -12,6 +12,7 @@
 Our goal is to develop backend data processing, database management, and frontend implementation into a scalable solution with experience in collaborative software engineering processes.
 
 # Project Structure
+```
 MOMO-SMS-Data-App/
 ├── data/
 │   ├──logs/
@@ -44,7 +45,7 @@ MOMO-SMS-Data-App/
 │   └── app.js
 ├── .gitignore
 └── README.md
-
+```
 
 # System architecture
   - backend: Handles XML parsing, data cleaning and APIs
