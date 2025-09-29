@@ -1,0 +1,15 @@
+{
+  "log_id": 1055,
+  "transaction_id": "98765",
+  "message": "Transaction successfully completed",
+  "created_at": "2025-09-28T10:46:35Z"
+}
+
+{
+  "log_id": 5001,
+  "transaction_id": "23569",
+  "message": "Transaction failed",
+  "created_at": "2025-09-28T11:55:21Z"
+}
+
+
