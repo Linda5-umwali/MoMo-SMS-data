@@ -32,6 +32,9 @@ MOMO-SMS-Data-App/
 │   ├──Transactions_ex.json
 │   ├──complex_ex.json
 │   └──Transactions_categories.ex.json
+├── dsa/
+│   ├── parser.py
+│   └── search.py
 ├── scripts/
 │   ├── export_json.sh
 │   ├── run_etl.sh
@@ -63,8 +66,5 @@ Also, critical like amount employs exact notation (DECIMAL), and timestamp types
 
 - design can be viewed directly here: https://github.com/Linda5-umwali/MoMo-SMS-data/blob/main/docs/ERD_design.pdf 
 
-# Team members
-- Angel Wangui Kibui
-- Brenda Nyambura Maina
-- Linda Umwali
-- Ndunge Mutheu Mbithi  
+# scrum board
+[Trello](https://trello.com/b/Z3e9SIRX/project-1)
