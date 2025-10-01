@@ -5,7 +5,7 @@ from pathlib import Path
 import threading
 
 ROOT = Path(__file__).resolve().parents[1]
-DATA_FILE = ROOT / "data" / "transactions.json"
+DATA_FILE = ROOT / "data" / "sms_data_records.json"
 
 _lock = threading.Lock()
 
