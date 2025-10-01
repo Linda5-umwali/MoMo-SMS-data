@@ -1,25 +1,25 @@
 # Momo transactions API endpoint documentation
 ## API Outline
 - Name: REST API
-- Base URL: http://localhost:8000
+- Base URL: `http://localhost:8000`
 - Purpose: This API makes SMS records available in a secure and efficient way, allowing users to retrieve, create, update, and delete SMS.
 - Version: V1.0
 - Authentication: Basic authantication
 ## Endpoint & Method
 
 ## 1. Get all transactions
-   - URL: /transactions
+   - URL: `/transactions`
    - Method: GET
    - Description: Retrieves a list of all momo transactions in the system.
 
 ### Request Example  
 curl command: 
 
-curl -u admin:secret "http://localhost:8000/transactions"
+`curl -u admin:secret "http://localhost:8000/transactions"`
 
 where:
 - admin: username
-- secret:password 
+- secret: password 
 ### Response Example
 
 ### Error Codes
@@ -29,10 +29,7 @@ where:
 
 ## 2. Retrieve Single Transaction
 ### Endpoint & Method
-- URL:
-```
-/transactions/{id}
-```
+- URL: `/transactions/{id}`
 - Method: GET
 - ID: Transaction_id
 - Authentication: Basic authentication
@@ -48,7 +45,7 @@ where:
 
 ## 3. POST ( Create new transaction)
 ### Endpoint & Method
-- URL: /transactions
+- URL:` /transactions`
 - Method: POST
 - Authentication: Basic authentication
 - Description: Creates a new transaction record.
@@ -62,7 +59,7 @@ where:
 
 ## 4. PUT (Update existing transaction)
 ### Endpoint & Method
-- URL: /transactions/{id}
+- URL:` /transactions/{id}`
 - Method: PUT
 - Authentication: Basic authentication
 - ID: Transaction_id (for record to be updated)
@@ -76,7 +73,7 @@ where:
 
 ## 5. DELETE (Delete transaction)
 ### Endpoint & Method
-- URL: /transactions/{id}
+- URL: `/transactions/{id}`
 - Method: DELETE
 - Authentication: Basic authentication
 - ID: Transaction_id (for record to be deleted)
