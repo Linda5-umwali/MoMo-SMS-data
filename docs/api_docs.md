@@ -14,13 +14,15 @@
 
 ### Request Example  
 curl command: 
-
 `curl -u admin:secret "http://localhost:8000/transactions"`
 
 where:
 - admin: username
-- secret: password 
+- secret: password
+ 
 ### Response Example
+![GET request success](screenshots/GET_all_transctions.png)
+![GET request success](screenshots/All_transaction_example)
 
 ### Error Codes
 - 200 OK: successfully retrieved data
@@ -35,7 +37,12 @@ where:
 - Authentication: Basic authentication
 - Description: Retrieves a specific transaction using its id
 
+### Request Example
+curl command: 
+`curl -u admin:secret "http://localhost:8000/transactions/1"`
+
 ### Response Example
+![GET request success](screenshots/Trans_by_id)
 
 ### Error Codes
 - 404 Not Found: Transaction with specific id not found/ doesn't exist
@@ -50,7 +57,17 @@ where:
 - Authentication: Basic authentication
 - Description: Creates a new transaction record.
 
-## Example
+### Request Example
+curl command: 
+```
+curl -u admin:secret -X POST -H "Content-Type: application/json" \
+-d '{"address":"12345","body":"Test transaction"}' \
+http://localhost:8000/transactions
+```
+
+### Response Example
+![GET request success](screenshots/post_new.png)
+
 ### Error codes
 - 201 Created: Transaction successfully created
 - 400 Bad Request: Invalid JSON format or missing required fields
@@ -65,6 +82,17 @@ where:
 - ID: Transaction_id (for record to be updated)
 - Description: Update an already existing transaction with new or added data.
 
+### Request Example
+curl command: 
+```
+curl -u admin:secret -X PUT -H "Content-Type: application/json" \
+-d '{"address":"12345","body":"Updated transaction"}' \
+http://localhost:8000/transactions/1
+```
+
+### Response Example
+![GET request success](screenshots/put.png)
+
 - ### Error codes
 - 200 OK: Transaction successfully updated
 - 400 Bad Request: Invalid JSON format or missing required fields
@@ -78,6 +106,13 @@ where:
 - Authentication: Basic authentication
 - ID: Transaction_id (for record to be deleted)
 - Description: Deleting a transaction record for good.
+
+### Request Example
+curl command: 
+`curl -u admin:secret -X DELETE http://localhost:8000/transactions/1`
+
+### Response Example
+![GET request success](screenshots/delete.png)
 
 ### Error Codes
 - 200 OK: Transaction successfully deleted
