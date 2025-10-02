@@ -1,28 +1,36 @@
 import json
+import os
 import base64
+import threading
 from http.server import HTTPServer, BaseHTTPRequestHandler
 from pathlib import Path
-import threading
+from urllib.parse import urlparse
 
-ROOT = Path(__file__).resolve().parents[1]
-DATA_FILE = ROOT / "data" / "sms_data_records.json"
 
-_lock = threading.Lock()
+REPO_ROOT = Path(__file__).resolve().parents[1]
+DATA_FILE = REPO_ROOT / "data" / "processed"/ "sms_records.json"
+LOCK = threading.Lock() # thread lock for safe file operations
+server = HTTPServer(("localhost", PORT), TransactionHandler)
 
-# Demo user
-VALID_USERS = {"admin": "secret"}
-
+# Demo user for basic auth
+VALID_USERS = {"admin": "secret"} #admin: username, secret:password
 
 def load_transactions():
     if DATA_FILE.exists():
-        with DATA_FILE.open("r", encoding="utf-8") as f:
-            return json.load(f)
-    return []
+        try:
+            with DATA_FILE.open("r", encoding="utf-8") as f:
+                return json.load(f)
+        except json.JSONDecodeError:
+            print(f"Error: Could not decode JSON from {DATA_FILE}")
+            return []
 
 
 def save_transactions(txs):
-    with DATA_FILE.open("w", encoding="utf-8") as f:
-        json.dump(txs, f, indent=2, ensure_ascii=False)
+    with LOCK:
+        os_dir = DATA_FILE.parent
+        os_dir.mkdir(parents=True, exist_ok=True)
+        with DATA_FILE.open("w", encoding="utf-8") as f:
+            json.dump(txs, f, indent=2, ensure_ascii=False)
 
 
 def check_auth(header: str) -> bool:
@@ -40,9 +48,7 @@ def check_auth(header: str) -> bool:
 
 class TransactionHandler(BaseHTTPRequestHandler):
     def _send(self, code=200, data=None):
-        body = b""
-        if data is not None:
-            body = json.dumps(data, ensure_ascii=False).encode("utf-8")
+        body = json.dumps(data, ensure_ascii=False).encode("utf-8") if data else b""
         self.send_response(code)
         self.send_header("Content-Type", "application/json")
         self.send_header("Content-Length", str(len(body)))
@@ -62,20 +68,33 @@ class TransactionHandler(BaseHTTPRequestHandler):
         if not self._require_auth():
             return
 
-        parts = self.path.strip("/").split("/")
+        parsed = urlparse(self.path)
+        path_parts = parsed.path.strip("/").split("/")
         txs = load_transactions()
 
-        if self.path in ["/transactions", "/transactions/"]:
-            self._send(200, txs)
-        elif len(parts) == 2 and parts[0] == "transactions":
-            tid = parts[1]
-            tx = next((t for t in txs if str(t["id"]) == tid), None)
+        if parsed.path.rstrip("/") == "/transactions":
+            params = parse_qs(parsed.query)
+            address = params.get("address", [None])[0]
+            tid = params.get("transaction_id", [None])[0]
+
+            filtered = txs
+            if address:
+                filtered = [t for t in filtered if t.get("address") == address]
+            if tid:
+                filtered = [t for t in filtered if str(t.get("transaction_id")) == str(tid)]
+
+            self._send(200, filtered)
+            return
+
+        elif len(path_parts) == 2 and path_parts[0] == "transactions":
+            tx = next((t for t in txs if str(t["id"]) == path_parts[1]), None)
             if tx:
                 self._send(200, tx)
             else:
                 self._send(404, {"error": "Not found"})
-        else:
-            self._send(404, {"error": "Endpoint not found"})
+            return
+
+        self._send(404, {"error": "Endpoint not found"})
 
     def do_POST(self):
         if not self._require_auth():
@@ -88,76 +107,71 @@ class TransactionHandler(BaseHTTPRequestHandler):
         body = self.rfile.read(length)
         try:
             payload = json.loads(body.decode("utf-8"))
-        except Exception:
+        except json.JSONDecodeError:
             self._send(400, {"error": "Invalid JSON"})
             return
 
         txs = load_transactions()
-        new_id = max((int(t["id"]) for t in txs), default=0) + 1
-        payload["id"] = new_id
+        payload["id"] = max((int(t["id"]) for t in txs), default=0) + 1
         txs.append(payload)
-
-        with _lock:
-            save_transactions(txs)
-
+        save_transactions(txs)
         self._send(201, payload)
 
     def do_PUT(self):
         if not self._require_auth():
             return
-        parts = self.path.strip("/").split("/")
-        if len(parts) == 2 and parts[0] == "transactions":
-            tid = parts[1]
-            length = int(self.headers.get("Content-Length", 0))
-            body = self.rfile.read(length)
-            try:
-                payload = json.loads(body.decode("utf-8"))
-            except Exception:
-                self._send(400, {"error": "Invalid JSON"})
-                return
-
-            txs = load_transactions()
-            updated = None
-            for i, tx in enumerate(txs):
-                if str(tx["id"]) == tid:
-                    payload["id"] = tx["id"]
-                    txs[i] = payload
-                    updated = payload
-                    break
-
-            if not updated:
-                self._send(404, {"error": "Not found"})
-                return
-
-            with _lock:
-                save_transactions(txs)
-
-            self._send(200, updated)
-        else:
+        path_parts = self.path.strip("/").split("/")
+        if len(path_parts) != 2 or path_parts[0] != "transactions":
             self._send(404, {"error": "Endpoint not found"})
+            return
+
+        tid = path_parts[1]
+        length = int(self.headers.get("Content-Length", 0))
+        body = self.rfile.read(length)
+        try:
+            payload = json.loads(body.decode("utf-8"))
+        except json.JSONDecodeError:
+            self._send(400, {"error": "Invalid JSON"})
+            return
+
+        txs = load_transactions()
+        updated = None
+        for i, tx in enumerate(txs):
+            if str(tx["id"]) == tid:
+                payload["id"] = tx["id"]
+                txs[i] = payload
+                updated = payload
+                break
+
+        if not updated:
+            self._send(404, {"error": "Not found"})
+            return
+            
+        save_transactions(txs)
+        self._send(200, updated)
 
     def do_DELETE(self):
         if not self._require_auth():
             return
-        parts = self.path.strip("/").split("/")
-        if len(parts) == 2 and parts[0] == "transactions":
-            tid = parts[1]
-            txs = load_transactions()
-            removed = None
-            for i, tx in enumerate(txs):
-                if str(tx["id"]) == tid:
-                    removed = txs.pop(i)
-                    break
-            if not removed:
-                self._send(404, {"error": "Not found"})
-                return
-
-            with _lock:
-                save_transactions(txs)
-
-            self._send(200, {"deleted": removed})
-        else:
+        path_parts = self.path.strip("/").split("/")
+        if len(path_parts) != 2 or path_parts[0] != "transactions":
             self._send(404, {"error": "Endpoint not found"})
+            return
+
+        tid = path_parts[1]
+        txs = load_transactions()
+        removed = None
+        for i, tx in enumerate(txs):
+            if str(tx["id"]) == tid:
+                removed = txs.pop(i)
+                break
+
+        if not removed:
+            self._send(404, {"error": "Not found"})
+            return
+
+        save_transactions(txs)
+        self._send(200, {"deleted": removed})
 
 
 if __name__ == "__main__":
