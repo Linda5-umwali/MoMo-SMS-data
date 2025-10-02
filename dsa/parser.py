@@ -11,7 +11,7 @@ def parse_sms_xml(raw_file=RAW_FILE, output_file=PROCESSED_FILE):
     try:
         tree = ET.parse(raw_file)
         root = tree.getroot()
-    except ET.ParseEroor as e::
+    except ET.ParseError as e:
         print(f"Error parsing XML: {e}")
         return []
 
