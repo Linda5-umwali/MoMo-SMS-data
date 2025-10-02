@@ -4,7 +4,7 @@ import base64
 import threading
 from http.server import HTTPServer, BaseHTTPRequestHandler
 from pathlib import Path
-from urllib.parse import urlparse
+from urllib.parse import urlparse, parse_qs
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
@@ -67,6 +67,9 @@ class TransactionHandler(BaseHTTPRequestHandler):
     def do_GET(self):
         if not self._require_auth():
             return
+
+        txs = load_transaction()
+        print([t["id"]for t in txs])
 
         parsed = urlparse(self.path)
         path_parts = parsed.path.strip("/").split("/")
