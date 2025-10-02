@@ -106,6 +106,8 @@ python3 search.py
 ```
 Shows average search times for linear search vs dictionary lookup.
 
+![Alt text](https://github.com/Linda5-umwali/MoMo-SMS-data/blob/main/screenshots/comparison.png)
+
 ### 6. API docs path
 ```
 MoMo-SMS-data/
