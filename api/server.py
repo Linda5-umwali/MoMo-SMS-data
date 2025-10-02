@@ -16,13 +16,13 @@ server = HTTPServer(("localhost", PORT), TransactionHandler)
 VALID_USERS = {"admin": "secret"} #admin: username, secret:password
 
 def load_transactions():
-    if DATA_FILE.exists():
-        try:
+    try:
+        if DATA_FILE.exists():
             with DATA_FILE.open("r", encoding="utf-8") as f:
                 return json.load(f)
-        except json.JSONDecodeError:
-            print(f"Error: Could not decode JSON from {DATA_FILE}")
-            return []
+    except Exception as e:
+        print(f"Failed to load JSON: {e}")
+    return []
 
 
 def save_transactions(txs):
@@ -71,6 +71,7 @@ class TransactionHandler(BaseHTTPRequestHandler):
         parsed = urlparse(self.path)
         path_parts = parsed.path.strip("/").split("/")
         txs = load_transactions()
+        print(t["id"] for t in txs)
 
         if parsed.path.rstrip("/") == "/transactions":
             params = parse_qs(parsed.query)
