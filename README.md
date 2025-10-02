@@ -64,7 +64,64 @@ Also, critical like amount employs exact notation (DECIMAL), and timestamp types
 
 (The design was created using lucidcharts).
 
-- design can be viewed directly here: https://github.com/Linda5-umwali/MoMo-SMS-data/blob/main/docs/ERD_design.pdf 
+- design can be viewed directly here: https://github.com/Linda5-umwali/MoMo-SMS-data/blob/main/docs/ERD_design.pdf
+
+## setup instructions 
+### 1. clone repository
+```
+git clone <https://github.com/Linda5-umwali/MoMo-SMS-data.git>
+cd MoMo-SMS-data
+```
+### 2. parse XML To JSON 
+`python3 parser.py` 
+this generates sms_records.json in `data/processed/`.
+
+### 3. Running the API
+```
+cd api
+python3 server.py
+```
+The API will run at `http://localhost:8000`.
+#### Authentication:
+- Username:admin
+- Passcord:secret
+
+### 4. Testing API endpoints
+using `curl`
+#### get transactions:
+```
+curl -u admin:secret http://localhost:8000/transactions
+
+```
+#### get transaction by ID:
+```
+curl -u admin:secret http://localhost:8000/transactions/1
+
+```
+
+### 5. Running DSA Comparison
+```
+cd dsa
+python3 search.py
+```
+Shows average search times for linear search vs dictionary lookup.
+
+### 6. API docs path
+```
+MoMo-SMS-data/
+├── data/
+│   ├── raw/
+│   └── modified__sms_v2.xml
+│   └── processed/
+│   └── sms_records.json
+├── dsa/
+│   ├── parser.py
+│   └── search.py
+├── api/ 
+│   └── server.py
+└── README.md
+
+```
 
 # scrum board
 [Trello](https://trello.com/b/Z3e9SIRX/project-1)
