@@ -68,7 +68,7 @@ class TransactionHandler(BaseHTTPRequestHandler):
         if not self._require_auth():
             return
 
-        txs = load_transaction()
+        txs = load_transactions()
         print([t["id"]for t in txs])
 
         parsed = urlparse(self.path)
