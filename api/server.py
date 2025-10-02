@@ -10,6 +10,7 @@ from urllib.parse import urlparse
 REPO_ROOT = Path(__file__).resolve().parents[1]
 DATA_FILE = REPO_ROOT / "data" / "processed"/ "sms_records.json"
 LOCK = threading.Lock() # thread lock for safe file operations
+PORT = 8000
 server = HTTPServer(("localhost", PORT), TransactionHandler)
 
 # Demo user for basic auth
