@@ -22,7 +22,7 @@ where:
  
 ### Response Example
 ![Alt text](https://github.com/Linda5-umwali/MoMo-SMS-data/blob/main/screenshots/All_transaction_example)
-![GET request success](screenshots/All_transaction_example)
+![Alt text](https://github.com/Linda5-umwali/MoMo-SMS-data/blob/main/screenshots/GET_all_transctions.png)
 
 ### Error Codes
 - 200 OK: successfully retrieved data
@@ -42,7 +42,7 @@ curl command:
 `curl -u admin:secret "http://localhost:8000/transactions/1"`
 
 ### Response Example
-![GET request success](screenshots/Trans_by_id)
+![Alt text](https://github.com/Linda5-umwali/MoMo-SMS-data/blob/main/screenshots/Trans_by_id)
 
 ### Error Codes
 - 404 Not Found: Transaction with specific id not found/ doesn't exist
@@ -66,7 +66,7 @@ http://localhost:8000/transactions
 ```
 
 ### Response Example
-![GET request success](screenshots/post_new.png)
+![Alt text](https://github.com/Linda5-umwali/MoMo-SMS-data/blob/main/screenshots/post_new.png)
 
 ### Error codes
 - 201 Created: Transaction successfully created
@@ -91,8 +91,7 @@ http://localhost:8000/transactions/1
 ```
 
 ### Response Example
-![GET request success](screenshots/put.png)
-
+![Alt text](https://github.com/Linda5-umwali/MoMo-SMS-data/blob/main/screenshots/put.png)
 - ### Error codes
 - 200 OK: Transaction successfully updated
 - 400 Bad Request: Invalid JSON format or missing required fields
@@ -112,8 +111,7 @@ curl command:
 `curl -u admin:secret -X DELETE http://localhost:8000/transactions/1`
 
 ### Response Example
-![GET request success](screenshots/delete.png)
-
+![Alt text](https://github.com/Linda5-umwali/MoMo-SMS-data/blob/main/screenshots/delete.png)
 ### Error Codes
 - 200 OK: Transaction successfully deleted
 - 401 Unauthorized: Invalid or missing authentication credentials
