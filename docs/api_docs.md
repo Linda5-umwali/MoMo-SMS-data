@@ -21,7 +21,7 @@ where:
 - secret: password
  
 ### Response Example
-![GET request success](screenshots/GET_all_transctions.png)
+![Alt text](https://github.com/Linda5-umwali/MoMo-SMS-data/blob/main/screenshots/All_transaction_example)
 ![GET request success](screenshots/All_transaction_example)
 
 ### Error Codes
