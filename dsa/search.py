@@ -1,15 +1,16 @@
 import json
 import os
 import time
+from pathlib import Path
 
 # Paths
-PROCESSED_FILE = os.path.join("data", "processed", "sms_records.json")
+REPO_ROOT = Path(__file__).resolve().parents[1]
+PROCESSED_FILE = REPO_ROOT / "data" / "processed" / "sms_records.json"
 
 # Load SMS records from JSON
 def load_sms():
-    with open(PROCESSED_FILE, "r") as f:
-        sms_list = json.load(f)
-    return sms_list
+    with open(PROCESSED_FILE, "r", encoding="utf-8") as f:
+        return json.load(f)
 
 # Build dictionary for O(1) lookup
 def build_dict(sms_list):
