@@ -4,8 +4,8 @@ import xml.etree.ElementTree as ET
 import re
 from datetime import datetime
 
-RAW_FILE = "data/raw/modified_sms_v2.xml"
-PROCESSED_FILE = "data/processed/sms_records.json"
+RAW_FILE = "../data/raw/modified_sms_v2.xml"
+PROCESSED_FILE = "../data/processed/sms_records.json"
 
 def parse_sms_xml(raw_file=RAW_FILE, output_file=PROCESSED_FILE):
     try:
