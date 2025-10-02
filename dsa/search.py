@@ -51,8 +51,8 @@ def main():
     avg_dict = sum(dict_times) / len(dict_times)
 
     print("=== DSA Comparison: Linear Search vs Dictionary Lookup ===")
-    print(f"Average Linear Search Time (20 records): {avg_linear:.8f} seconds")
-    print(f"Average Dictionary Lookup Time (20 records): {avg_dict:.8f} seconds")
+    print(f"Average Linear Search Time: {avg_linear*1e6:.2f} μs")
+    print(f"Average Dictionary Lookup Time: {avg_dict*1e6:.2f} μs")
     print(f"Dictionary lookup is approximately {avg_linear/avg_dict:.1f} times faster than linear search.\n")
 
 
