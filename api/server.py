@@ -11,7 +11,6 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 DATA_FILE = REPO_ROOT / "data" / "processed"/ "sms_records.json"
 LOCK = threading.Lock() # thread lock for safe file operations
 PORT = 8000
-server = HTTPServer(("localhost", PORT), TransactionHandler)
 
 # Demo user for basic auth
 VALID_USERS = {"admin": "secret"} #admin: username, secret:password
@@ -175,9 +174,8 @@ class TransactionHandler(BaseHTTPRequestHandler):
         save_transactions(txs)
         self._send(200, {"deleted": removed})
 
-
 if __name__ == "__main__":
-    server = HTTPServer(("localhost", 8000), TransactionHandler)
+    server = HTTPServer(("localhost", PORT), TransactionHandler)
     print("API running at http://localhost:8000 (Basic Auth: admin/secret)")
     try:
         server.serve_forever()
